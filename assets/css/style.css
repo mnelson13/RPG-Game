@@ -2,14 +2,6 @@ body {
     background-image: url(../images/background2.jpg);
 }
 
-h1 {
-    text-align: right;
-}
-
-.white {
-    color: #ffffff;
-}
-
 p {
     text-align: center;
     color: white;
@@ -18,7 +10,6 @@ p {
 .charImage {
     height: 150px;
     width: 200px;
-    /* float: left; */
 }
 
 .character,
@@ -31,33 +22,26 @@ p {
     margin: 0 20px;
     padding-left: 10px;
     padding-right: 10px;
+    float: left;
 }
 
 .yourCharacter {
     border-color: green;
 }
 
-.yourCharacter img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .enemy {
-    float: left;
     border-color: red;
 }
 
 .defender {
-    float: left;
     border-color: black;
 }
 
 #fightSection {
-    clear: both;
+    clear: left;
 }
 
 
 #chosenCharacter {
-    height: 200px;
+    height: 250px;
 }
