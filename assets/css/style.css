@@ -1,5 +1,8 @@
 body {
     background-image: url(../images/background2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 p {
@@ -37,11 +40,6 @@ p {
     border-color: black;
 }
 
-#fightSection {
-    clear: left;
-}
-
-
 #chosenCharacter {
-    height: 250px;
+    min-height: 200px;
 }

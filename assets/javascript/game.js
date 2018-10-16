@@ -4,7 +4,7 @@ var characters = {
     jonSnow: {
         name: "Jon Snow",
         HP: 120,
-        AP: 9,
+        AP: 8,
         CAP: 15,
         src: "assets/images/jonsnow.jpg",
     },
@@ -18,15 +18,15 @@ var characters = {
     jaime: {
         name: "Jaime Lannister",
         HP: 100,
-        AP: 15,
+        AP: 14,
         CAP: 5,
         src: "assets/images/Jaime.jpg"
     },
     theNightKing: {
         name: "The Night King",
         HP: 180,
-        AP: 7,
-        CAP: 18,
+        AP: 4,
+        CAP: 25,
         src: "assets/images/nightking.jpg",
     }
 
@@ -65,6 +65,12 @@ function render(character, location) {
     $(location).append(charDiv);
 };
 
+//function to update character's HP display after attack
+function updateHP(){
+    $("#" + playerChar + "HP").text(playerHealth);
+    $("#" + defenderChar + "HP").text(defenderHealth);
+};
+
 //to select your character, move them to "Your Character" area and move all others to "enemies" area
 $(document.body).on("click", ".character", function() {
     if (chosenCharacter.children.length == 0) {
@@ -97,40 +103,42 @@ $(document.body).on("click", ".enemy", function(){
 //attack function
 $("#attack").on("click", function() {
     if (chosenCharacter.children.length == 1 && defender.children.length == 1) {
-        playerHealth -= defenderAttack;
         defenderHealth -= playerAttack;
-        
-        //when both player and defender are still alive
-        if (playerHealth > 0 && defenderHealth > 0) {
-            $("#fightText").text("You attacked " + characters[defenderChar].name + " for " + playerAttack + " damage.\n"
-            + characters[defenderChar].name + " attacked you back for " + defenderAttack + " damage.");
-            $("#" + playerChar + "HP").text(playerHealth);
-            $("#" + defenderChar + "HP").text(defenderHealth);
-            playerAttack += characters[playerChar].AP
 
-        //when player defeats current defender and there are still enemies left
+        //if defender health is still above 0 after player attack...
+        if (defenderHealth > 0) {
+            playerHealth -= defenderAttack;
+
+            //If player health is below 0, game over
+            if (playerHealth <= 0) {
+                updateHP();
+                $("#fightText").text("You have been defeated! Game over!");
+                $("#fightText2").text("");
+                $("#fightText").append("<br><button id='reset' type='button' class='btn btn-light'>Restart</button>");
+
+            //if player health and defender health are above 0, show fight text
+            } else if (playerHealth > 0 && defenderHealth > 0) {
+                updateHP();
+                $("#fightText").text("You attacked " + characters[defenderChar].name + " for " + playerAttack + " damage.")
+                $("#fightText2").text(characters[defenderChar].name + " attacked you back for " + defenderAttack + " damage.");           
+                playerAttack += characters[playerChar].AP
+            };
+
+        //if defender health is 0 or below after player attack...
         } else if (playerHealth > 0 && defenderHealth <= 0 && enemies.children.length > 0) {
-            playerHealth += defenderAttack;
-            $("#" + playerChar + "HP").text(playerHealth);
-            $("#" + defenderChar + "HP").text(defenderHealth);
+            updateHP();
             $("#defender").empty();
             $("#fightText").text("You have defeated " + characters[defenderChar].name + ". You can choose to fight another enemy.")
-        
-        //when defender defeats player
-        } else if (playerHealth <= 0) {
-            $("#" + playerChar + "HP").text(playerHealth);
-            $("#" + defenderChar + "HP").text(defenderHealth);
-            $("#fightText").text("You have been defeated! Game over!");
-            $("#fightText").append("<button id='reset'>Restart</button>");
-        
-        //when player defeats current defender and there are no other enemies left
+            $("#fightText2").text("");
+            playerAttack += characters[playerChar].AP
+
+        //if all enemies are defeated, game over and player wins
         } else if (playerHealth > 0 && defenderHealth <= 0 && enemies.children.length === 0) {
-            $("#" + playerChar + "HP").text(playerHealth);
-            $("#" + defenderChar + "HP").text(defenderHealth);
+            updateHP();
             $("#fightText").text("You won!! Game over!!")
-            $("#fightText").append("<button id='reset'>Restart</button>");
-            
-        }
+            $("#fightText2").text("");
+            $("#fightText").append("<br><button id='reset' type='button' class='btn btn-light'>Restart</button>");
+        };
     }
 });
 
