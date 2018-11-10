@@ -1,7 +1,7 @@
 # Game of Thrones RPG
 
 ### Link to Deployed Project:
-* https://mnelson13.github.io/unit-4-game/
+* https://mnelson13.github.io/RPG-Game/
 
 ### Instructions:
 * Pick your character
